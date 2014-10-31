@@ -15,12 +15,17 @@ extern "C"
 #include <libavutil/samplefmt.h>
 #include <libavutil/timestamp.h>
 #include <libavutil/opt.h>
+#include <libavutil/error.h>
 #include <libavformat/avformat.h>
 }
 #include <string>
+static char err_buf[AV_ERROR_MAX_STRING_SIZE]={0};
 #define AV_ERR(x) do{if(1){\
-	fprintf(stderr,"ERROR: %s %d: %s\n",__FILE__,__LINE__,av_err2str(ret));\
+	fprintf(stderr,"ERROR: %s %d: %s\n",__FILE__,__LINE__,av_make_error_string(err_buf,\
+				sizeof(err_buf),x));\
 	}}while(0)
+//#define AV_ERR(x) 
+
 #define ERR(x,...) do{if(1){\
 	fprintf(stderr,"ERROR: %s %d: "x"\n",__FILE__,__LINE__,##__VA_ARGS__);\
 	}}while(0)
